@@ -2,5 +2,5 @@
 Simple Processor using the MIPS archeticture.
 
 Todo
-    - ALU and ALU control
-    - implement the CLA adder
+    * ALU and ALU control
+    * implement the CLA adder
