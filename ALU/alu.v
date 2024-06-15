@@ -1,4 +1,4 @@
-`include "singleBAdder.v"
+`include "oneBAdder/singleBAdder.v"
 `define N 16 // I don't like parameters
 
 /*
@@ -19,14 +19,14 @@
 module ALU(input [2 : 0] OPCODE, input [`N - 1 : 0]a, input [`N - 1 : 0] b, output reg [`N - 1 : 0] s, output cOut);
 
     wire[`N - 1 : 0] andOut, orOut, xorOut, shiftrOut, shiftlOut, gtOut, addOut;
-    wire [`N : 0] tmp_carry; // 0 1 .. N, tmp_carry[N] => cout.
+    wire [`N : 0] tmp_carry; // 0 1 .. N, tmp_carry[N] is cout.
 
     assign tmp_carry[0] = OPCODE[0]; // OPCODE & 0x1
     assign cOut = tmp_carry[`N]; 
 
     genvar i;
     generate
-        for(i = 1;i < `N;i = i + 1)begin : NbitAdder
+        for(i = 0;i < `N;i = i + 1)begin : NbitAdder
             oneBAdder aa(
                 .a(a[i]),
                 .b(b[i] ^ OPCODE[0]), 
@@ -41,7 +41,7 @@ module ALU(input [2 : 0] OPCODE, input [`N - 1 : 0]a, input [`N - 1 : 0] b, outp
     assign xorOut = a ^ b;
     assign shiftrOut = a >> 1;
     assign shiftlOut = a << 1;
-    assign gtOut = a > b;
+    assign gtOut = a > b ? 1 : 0;
     always @(*) begin
         case (OPCODE)
             0, 1: s = addOut;
