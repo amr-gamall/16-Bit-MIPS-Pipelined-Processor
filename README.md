@@ -2,3 +2,4 @@
 - TODO: 
 	- Complete the alu logic and control
 	- substitute ripple adder with CLA
+	- just testing
