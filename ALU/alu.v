@@ -14,9 +14,12 @@
 | 6      | a << 1 |
 | 7      | a >> 1 |
 +--------+--------+
+sign     = ovf ^ N     // the true sign
+negative = s[`N - 1]   // hardwired to the sign bit
+ovf      = s & !a & !b | !s & a & b = cin ^ cout
 */
 
-module ALU(input [2 : 0] OPCODE, input [`N - 1 : 0]a, input [`N - 1 : 0] b, output reg [`N - 1 : 0] s, output cOut, output ovf);
+module ALU(input [2 : 0] OPCODE, input [`N - 1 : 0]a, input [`N - 1 : 0] b, output reg [`N - 1 : 0] s, output cOut, output ovf, output sign, output negative);
 
     wire[`N - 1 : 0] andOut, orOut, xorOut, shiftrOut, shiftlOut, gtOut, addOut;
     wire [`N : 0] tmp_carry; // 0 1 .. N, tmp_carry[N] is cout.
@@ -24,8 +27,9 @@ module ALU(input [2 : 0] OPCODE, input [`N - 1 : 0]a, input [`N - 1 : 0] b, outp
 
     assign ovf = tmp_carry[`N] ^ tmp_carry[`N - 1];
     assign tmp_carry[0] = OPCODE[0]; // OPCODE & 0x1
-    assign cOut = tmp_carry[`N]; 
-
+    assign cOut = tmp_carry[`N];
+    assign negative = addOut[`N - 1]; 
+    assign sign = ovf ^ negative;
     genvar i;
     generate
         for(i = 0;i < `N;i = i + 1)begin : NbitAdder

@@ -30,6 +30,11 @@ module test;
                 end
             end
         end
+        #10
+        opcodeTest = 0;
+        firstOperandTest = 32767;
+        secondOperandTest = 5;
+        #10
         $finish;
     end
 
