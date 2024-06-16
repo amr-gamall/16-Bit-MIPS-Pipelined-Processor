@@ -16,11 +16,13 @@
 +--------+--------+
 */
 
-module ALU(input [2 : 0] OPCODE, input [`N - 1 : 0]a, input [`N - 1 : 0] b, output reg [`N - 1 : 0] s, output cOut);
+module ALU(input [2 : 0] OPCODE, input [`N - 1 : 0]a, input [`N - 1 : 0] b, output reg [`N - 1 : 0] s, output cOut, output ovf);
 
     wire[`N - 1 : 0] andOut, orOut, xorOut, shiftrOut, shiftlOut, gtOut, addOut;
     wire [`N : 0] tmp_carry; // 0 1 .. N, tmp_carry[N] is cout.
+    wire caryyInLastAdder;
 
+    assign ovf = tmp_carry[`N] ^ tmp_carry[`N - 1];
     assign tmp_carry[0] = OPCODE[0]; // OPCODE & 0x1
     assign cOut = tmp_carry[`N]; 
 
