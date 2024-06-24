@@ -53,7 +53,7 @@ module ALU(input [2 : 0] OPCODE, input [`N - 1 : 0]a, input [`N - 1 : 0] b, outp
             0, 1: s = addOut;
             2   : s = andOut;
             3   : s = orOut;
-            4   : s = xorOut;
+            4   : s = xorOut;   
             5   : s = gtOut;
             6   : s = shiftlOut;
             7   : s = shiftrOut;
