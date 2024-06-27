@@ -1,4 +1,1 @@
-# 16-Bit-MIPS-Pipelined-Processor
-- TODO: 
-	- Complete modules
-	- Add hazard unit
+# 32-Bit-MIPS-Pipelined-Processor 
