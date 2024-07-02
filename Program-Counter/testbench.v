@@ -2,11 +2,11 @@
 
 module tb;
 
-    reg rst, clk;
+    reg rst, clk, en;
     reg [31 : 0] dataInput;
 
 
-    programCounter dut(.clk(clk), .dataInput(dataInput), .rst(rst));
+    programCounter dut(.en(en),.clk(clk), .dataInput(dataInput), .rst(rst));
 
     always #10 clk ^= 1;
 
@@ -21,7 +21,7 @@ module tb;
         #10
         rst = 0;
 
-        // writing and reading
+        en = 1;
 
         @(negedge clk);
         dataInput = 4'b1010;
@@ -29,6 +29,14 @@ module tb;
         @(negedge clk);
         dataInput = 4'b1111;
 
+        en = 0;
+
+        @(negedge clk);
+        dataInput = 4'b1111;
+        
+        @(negedge clk);
+        dataInput = 4'b1111;
+        
         #50
 
 

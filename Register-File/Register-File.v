@@ -1,6 +1,7 @@
 module registerFile (
     input rst, clk, writeEnable,
-    input [31 : 0] dataWrite, addressWrite, addressA, addressB,
+    input [31 : 0] dataWrite, 
+    input [4 : 0] addressWrite, addressA, addressB,
     output reg [31 : 0] dataA, dataB
 );
     integer  i;
