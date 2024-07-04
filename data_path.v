@@ -10,7 +10,10 @@ module dataPath(
                   RegDst, MemtoReg, RegWrite, ALUsrcA,
     input [1 : 0] ALUsrcB, 
     input [2 : 0] ALUControl,
-    input PCsrc
+    input PCsrc,
+    // for testing
+    input [4 : 0] addressTest,
+    output [31 : 0] outputTest
     );
 
     // SignImm
@@ -18,10 +21,14 @@ module dataPath(
     assign SignImm = {Instr[15]?16'hffff : 16'h0000 , Instr[15 : 0]};
 
     // data/instruction memory ins and outs
-    wire [31 : 0] Adr, Instr, Data, dataOutput;
-    assign Instr = dataOutput;
-    assign Data = dataOutput;
-    assign Adr = IorD?PC:ALUOut;
+    wire [31 : 0] Adr, dataOutput;
+    reg [31 : 0] Instr, Data;
+    always @(posedge clk)
+        if(IRWrite)
+            Instr <= dataOutput;
+    always @(posedge clk)
+        Data  <= dataOutput;
+    assign Adr = IorD?ALUOut:PC;
     dataMemory m(.clk(clk), .rst(rst), .writeEnable(Memwrite), .address(Adr), .dataWrite(B), .dataOutput(dataOutput));
 
     
@@ -48,13 +55,13 @@ module dataPath(
     // PC ins and outs
     wire [31 : 0] PCPrime, PC;
     assign PCPrime = PCsrc ? ALUOut : ALUResult;
-    programCounter p(.rst(rst), .dataInput(PCPrime), .clk(clk), .dataOutput(PC));
+    programCounter p(.en(PCEn), .rst(rst), .dataInput(PCPrime), .clk(clk), .dataOutput(PC));
 
     // RF ins and outs
     wire [31 : 0]RwriteData;
     wire [4 : 0] Radr;
-    assign Radr = RegDst?Instr[20 : 16] : Instr[15 : 11];
-    assign RwriteData = MemtoReg?ALUOut : Data;
+    assign Radr = RegDst?Instr[15 : 11] : Instr[20 : 16];
+    assign RwriteData = MemtoReg?Data : ALUOut;
     wire [31 : 0] atmp, btmp;
     reg [31 : 0] A, B;
     always @(posedge clk)begin
@@ -63,7 +70,8 @@ module dataPath(
     end
     registerFile r(.clk(clk), .rst(rst), .writeEnable(RegWrite), .dataWrite(RwriteData), 
                    .addressWrite(Radr), .addressA(Instr[25 : 21]), .addressB(Instr[20 : 16]),
-                   .dataA(atmp), .dataB(btmp));
+                   .dataA(atmp), .dataB(btmp), .addressTest(addressTest),
+                    .outputTest(outputTest));
 endmodule
 
 

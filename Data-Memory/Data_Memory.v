@@ -3,7 +3,7 @@
 module dataMemory (
     input               clk, rst, writeEnable,
     input      [31 : 0] address, dataWrite,
-    output reg [31 : 0] dataOutput
+    output [31 : 0] dataOutput
 );
     
     reg [31 : 0] data [1023 : 0];
@@ -20,7 +20,5 @@ module dataMemory (
     end
 
 
-    always@(*)begin
-        dataOutput = data[address];
-    end
+    assign dataOutput = data[address];
 endmodule
