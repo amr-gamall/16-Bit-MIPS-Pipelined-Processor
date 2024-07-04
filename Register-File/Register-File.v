@@ -15,6 +15,8 @@ module registerFile (
             registerFileData[addressWrite] = dataWrite;
     end
 
+
+    
     always@(*)begin
         dataA = registerFileData[addressA];
         dataB = registerFileData[addressB];

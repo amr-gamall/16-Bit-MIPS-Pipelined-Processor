@@ -10,7 +10,8 @@ module dataPath(
                   RegDst, MemtoReg, RegWrite, ALUsrcA,
     input [1 : 0] ALUsrcB, 
     input [2 : 0] ALUControl,
-    input PCsrc);
+    input PCsrc
+    );
 
     // SignImm
     wire [31 : 0] SignImm;
@@ -67,4 +68,7 @@ endmodule
 
 
 
-// TODO : maybe unify MemtoReg and RegDst as one line
+/** TODO : maybe unify MemtoReg and RegDst as one line
+ ** Maybe add rst to the non-architectural registers, although it's unnecessary. 
+ ** the only register that needs rst is PC. 
+**/
