@@ -11,7 +11,7 @@ module dataPath(
     input [1 : 0] ALUsrcB, 
     input [2 : 0] ALUControl,
     input PCsrc,
-    // for testing
+    // for testing register file
     input [4 : 0] addressTest,
     output [31 : 0] outputTest
     );
@@ -68,7 +68,7 @@ module dataPath(
         A<=atmp;
         B<=btmp;
     end
-    registerFile r(.clk(clk), .rst(rst), .writeEnable(RegWrite), .dataWrite(RwriteData), 
+    registerFile r(.clk(clk), .rst(rst), .writeEnable(RegWrite), .dataWrite(RwriteData),
                    .addressWrite(Radr), .addressA(Instr[25 : 21]), .addressB(Instr[20 : 16]),
                    .dataA(atmp), .dataB(btmp), .addressTest(addressTest),
                     .outputTest(outputTest));
