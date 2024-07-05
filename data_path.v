@@ -15,7 +15,8 @@ module dataPath(
     input [4 : 0] addressTest,
     output [31 : 0] outputTest,
     // for controller
-    output [5 : 0] opcode, funct
+    output [5 : 0] opcode, funct,
+    output zero
     );
 
     //controller out
@@ -39,6 +40,7 @@ module dataPath(
 
     
     // ALU ins and outs
+    assign zero = (ALUResult == 0);
     wire[31 : 0] ALUResult;
     reg [31 : 0] SrcA, SrcB, ALUOut;
     always @(posedge clk)ALUOut <= ALUResult;
@@ -53,7 +55,7 @@ module dataPath(
             0:SrcB = B;
             1:SrcB = 1; // for simplicty it's word addressable
             2:SrcB = SignImm;
-            3:SrcB = SignImm << 2;
+            3:SrcB = SignImm;
             default: SrcB = 0;
         endcase
     end

@@ -19,7 +19,7 @@ module tb;
         rst = 0;
 
         addressTest = 10;
-        #200;
+        #300;
         $finish;
     end
 

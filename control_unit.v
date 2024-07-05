@@ -1,7 +1,7 @@
 module controller (
     input [5 : 0] opcode, funct,
     input         rst, clk,
-
+    input         zero,
     // controls from l to r
     output reg    PCEn, IorD, Memwrite, IRWrite, 
                   RegDst, MemtoReg, RegWrite, ALUsrcA,
@@ -16,8 +16,8 @@ module controller (
                beq   = 6'b000100;
 
     // funct fields
-    localparam add = 6'b100000,
-               sub = 6'b100010;
+    localparam sub = 6'b100000,
+               add = 6'b100010;
 
     // states
     localparam fetch     = 0,
@@ -39,7 +39,15 @@ module controller (
         case (currState)
             fetch : nextState <= decode;
             decode : nextState <= execute1;
-            execute1 : nextState <= execute2;
+            execute1 :begin
+                case (opcode)
+                    lw:nextState <= execute2;
+                    rType:nextState <= execute2;
+                    beq: nextState <= fetch;
+                    default: nextState <= fetch;
+                endcase
+
+            end
             execute2 : begin
                 case (opcode)
                     lw : nextState <= execute3; 
@@ -75,6 +83,14 @@ module controller (
                 RegWrite  = 0;
                 IRWrite   = 0;
                 PCEn      = 0;
+                // muxes
+                IorD      = 0;
+                RegDst    = 0;
+                MemtoReg  = 0;
+                ALUsrcA   = 0;
+                ALUsrcB   = 3;
+                ALUControl= 2;
+                PCsrc     = 0;            
             end
 
             execute1: begin
@@ -112,6 +128,21 @@ module controller (
                             sub : ALUControl = 6;
                             default: ALUControl = 2;
                         endcase
+                    end
+                    beq :begin
+                        // writes
+                        Memwrite  = 0;
+                        RegWrite  = 0;
+                        IRWrite   = 0;
+                        PCEn      = zero;
+                        // muxes
+                        IorD      = 0;
+                        RegDst    = 0;
+                        MemtoReg  = 0;
+                        ALUsrcA   = 1;
+                        ALUsrcB   = 0;
+                        ALUControl= 6;
+                        PCsrc     = 1;
                     end
                     default: PCsrc = 0; // invalid instruction
                 endcase
