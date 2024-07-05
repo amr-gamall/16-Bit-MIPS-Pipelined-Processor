@@ -1,10 +1,10 @@
 `include "control_unit.v"
 `include "data_path.v"
 
-module MIPS (input clk, rst);
+module MIPS(input clk, rst,
+            input [4 : 0] addressTest);
 
     wire [5 : 0] opcode, funct;
-    wire [4 : 0] addressTest;
     wire         PCEn, IorD, Memwrite, IRWrite, RegDst, MemtoReg, RegWrite, ALUsrcA,PCsrc;
     wire [1 : 0] ALUsrcB;
     wire [2 : 0] ALUControl;
