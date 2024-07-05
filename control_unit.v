@@ -16,8 +16,8 @@ module controller (
                beq   = 6'b000100;
 
     // funct fields
-    localparam sub = 6'b100000,
-               add = 6'b100010;
+    localparam add = 6'b100000,
+               sub = 6'b100010;
 
     // states
     localparam fetch     = 0,
