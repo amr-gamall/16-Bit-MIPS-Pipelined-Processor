@@ -90,8 +90,50 @@ module tb;
         @(negedge clk);
         MemtoReg = 1; RegWrite = 1; RegDst = 0;
 
+
+        // next instruction
+        @(negedge clk);
+        addressTest = 10;
+        Memwrite  = 0;
+        RegWrite  = 0;
+        IRWrite   = 0;
+        PCEn      = 0;
+        IorD      = 0;
+        RegDst    = 0;
+        MemtoReg  = 0;
+        ALUsrcA   = 0;
+        ALUsrcB   = 0;
+        ALUControl= 0;
+        PCsrc     = 0;
+        // mem[32] = 5
+        // reg[20] = 10
+        // lw  $10, mem[32]
+        // add $10, $10, $20; 
+
+
+        // fetch r instruction and write new PC
+        @(negedge clk);
+        IorD = 0; PCEn = 1; ALUsrcA = 0; ALUsrcB = 1; IRWrite = 1; ALUControl = 2;
+        PCsrc= 0;
+
+        // decode r instruction
+        @(negedge clk);
+        ALUsrcB = 0;
+        IRWrite = 0; PCEn = 0;
+        //nothing       
+
+        // execute
+        @(negedge clk);
+        ALUsrcA = 1; ALUsrcB = 0; ALUControl = 2;
+
+        // write back
+        @(negedge clk);
+        RegDst = 1; MemtoReg = 0; RegWrite = 1;
+
+
         #150;
         $finish;
+
     end
 
 

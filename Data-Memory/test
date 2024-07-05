@@ -1,0 +1,90 @@
+#! /usr/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "/usr/lib64/ivl/system.vpi";
+:vpi_module "/usr/lib64/ivl/vhdl_sys.vpi";
+:vpi_module "/usr/lib64/ivl/vhdl_textio.vpi";
+:vpi_module "/usr/lib64/ivl/v2005_math.vpi";
+:vpi_module "/usr/lib64/ivl/va_math.vpi";
+S_0x55eedaf8c510 .scope module, "dataMemory" "dataMemory" 2 3;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "clk";
+    .port_info 1 /INPUT 1 "rst";
+    .port_info 2 /INPUT 1 "writeEnable";
+    .port_info 3 /INPUT 32 "address";
+    .port_info 4 /INPUT 32 "dataWrite";
+    .port_info 5 /OUTPUT 32 "dataOutput";
+L_0x55eedafd7f30 .functor BUFZ 32, L_0x55eedafd7e70, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>, C4<00000000000000000000000000000000>;
+v0x55eedaf8c740_0 .net *"_ivl_0", 31 0, L_0x55eedafd7e70;  1 drivers
+o0x7f54fdacf048 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v0x55eedafd7700_0 .net "address", 31 0, o0x7f54fdacf048;  0 drivers
+o0x7f54fdacf078 .functor BUFZ 1, C4<z>; HiZ drive
+v0x55eedafd77e0_0 .net "clk", 0 0, o0x7f54fdacf078;  0 drivers
+v0x55eedafd7880 .array "data", 0 1023, 31 0;
+v0x55eedafd7940_0 .net "dataOutput", 31 0, L_0x55eedafd7f30;  1 drivers
+o0x7f54fdacf0d8 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v0x55eedafd7a70_0 .net "dataWrite", 31 0, o0x7f54fdacf0d8;  0 drivers
+v0x55eedafd7b50_0 .var/i "i", 31 0;
+o0x7f54fdacf138 .functor BUFZ 1, C4<z>; HiZ drive
+v0x55eedafd7c30_0 .net "rst", 0 0, o0x7f54fdacf138;  0 drivers
+o0x7f54fdacf168 .functor BUFZ 1, C4<z>; HiZ drive
+v0x55eedafd7cf0_0 .net "writeEnable", 0 0, o0x7f54fdacf168;  0 drivers
+E_0x55eedaf8caf0 .event posedge, v0x55eedafd7c30_0, v0x55eedafd77e0_0;
+L_0x55eedafd7e70 .array/port v0x55eedafd7880, o0x7f54fdacf048;
+    .scope S_0x55eedaf8c510;
+T_0 ;
+    %wait E_0x55eedaf8caf0;
+    %load/vec4 v0x55eedafd7c30_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.0, 8;
+    %pushi/vec4 1, 0, 32;
+    %store/vec4 v0x55eedafd7b50_0, 0, 32;
+T_0.2 ;
+    %load/vec4 v0x55eedafd7b50_0;
+    %cmpi/s 1024, 0, 32;
+    %jmp/0xz T_0.3, 5;
+    %pushi/vec4 0, 0, 32;
+    %ix/getv/s 3, v0x55eedafd7b50_0;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v0x55eedafd7880, 0, 4;
+    ; show_stmt_assign_vector: Get l-value for compressed += operand
+    %load/vec4 v0x55eedafd7b50_0;
+    %pushi/vec4 1, 0, 32;
+    %add;
+    %store/vec4 v0x55eedafd7b50_0, 0, 32;
+    %jmp T_0.2;
+T_0.3 ;
+    %pushi/vec4 2349465632, 0, 32;
+    %ix/load 3, 0, 0;
+    %flag_set/imm 4, 0;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v0x55eedafd7880, 0, 4;
+    %pushi/vec4 5, 0, 32;
+    %ix/load 3, 32, 0;
+    %flag_set/imm 4, 0;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v0x55eedafd7880, 0, 4;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/vec4 v0x55eedafd7cf0_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.4, 8;
+    %load/vec4 v0x55eedafd7a70_0;
+    %ix/getv 3, v0x55eedafd7700_0;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v0x55eedafd7880, 0, 4;
+T_0.4 ;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+    .scope S_0x55eedaf8c510;
+T_1 ;
+    %vpi_call 2 24 "$display", "%h", &A<v0x55eedafd7880, 0> {0 0 0};
+    %end;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "Data_Memory.v";

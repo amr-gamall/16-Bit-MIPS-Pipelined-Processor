@@ -13,9 +13,11 @@ module registerFile (
     reg [31 : 0] registerFileData [31 : 0];
 
     always @(posedge clk, posedge rst) begin
-        if(rst)
-            for(i = 0; i < 32; i++)
+        if(rst) begin
+            for(i = 0; i < 32&&i!=5'b10100; i++)
                 registerFileData[i] <= 0;
+            registerFileData[5'b10100] = 10;
+        end
         else if(writeEnable)
             registerFileData[addressWrite] = dataWrite;
     end

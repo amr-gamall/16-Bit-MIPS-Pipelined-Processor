@@ -13,8 +13,14 @@ module dataPath(
     input PCsrc,
     // for testing register file
     input [4 : 0] addressTest,
-    output [31 : 0] outputTest
+    output [31 : 0] outputTest,
+    // for controller
+    output [5 : 0] opcode, funct
     );
+
+    //controller out
+    assign opcode = Instr[31 : 26];
+    assign funct  = Instr[5 : 0];
 
     // SignImm
     wire [31 : 0] SignImm;
@@ -45,7 +51,7 @@ module dataPath(
         endcase
         case (ALUsrcB)
             0:SrcB = B;
-            1:SrcB = 4;
+            1:SrcB = 1; // for simplicty it's word addressable
             2:SrcB = SignImm;
             3:SrcB = SignImm << 2;
             default: SrcB = 0;
@@ -79,4 +85,5 @@ endmodule
 /** TODO : maybe unify MemtoReg and RegDst as one line
  ** Maybe add rst to the non-architectural registers, although it's unnecessary. 
  ** the only register that needs rst is PC. 
+ ** Change the data/instruction memory to byte addressable and concatenate the bytes.
 **/
